@@ -2,13 +2,9 @@
 
 module EventRouter
   module Examples
-    class OrderPlaced < EventRouter::Event
+    class PaymentReceived < EventRouter::Event
       deliver_to :notifications,
         handler: EventRouter::Examples::Notifications
-
-      deliver_to :event_store,
-        handler: EventRouter::Examples::EventStore::OrderPlaced,
-        method: :handle
     end
   end
 end

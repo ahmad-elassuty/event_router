@@ -9,6 +9,11 @@ module EventRouter
         binding.pry
         true
       end
+
+      def payment_received(event)
+        binding.pry
+        true
+      end
     end
   end
 end

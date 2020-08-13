@@ -4,7 +4,9 @@ require "securerandom"
 
 module EventRouter
   class Event
-    attr_reader :uid, :correlation_id, :created_at, :payload
+    attr_reader :uid, :created_at, :payload
+
+    attr_accessor :correlation_id
 
     class_attribute :destinations, default: {}, instance_writer: false
 
@@ -40,10 +42,9 @@ module EventRouter
       end
 
       def publish(**attrs)
-        event = new(**attrs)
-
-        EventRouter.publish(event)
+        EventRouter.publish(new(**attrs))
       end
     end
   end
+
 end

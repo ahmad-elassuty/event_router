@@ -6,28 +6,40 @@ require "event_router/event"
 require "event_router/event_serializer"
 require "event_router/deliver_event_job"
 
+require "examples/notifications"
+require "examples/event_store/order_placed"
 require "examples/order_placed"
+require "examples/payment_received"
 
 require "pry"
 
 module EventRouter
   module_function
 
-  def run_example
+  def schedule_single_event
     ActiveJob::Serializers.add_serializers EventSerializer
 
     Examples::OrderPlaced.publish(order_id: 1)
   end
 
-  def publish(event)
-    DeliverEventJob.perform_later(:notifications, event)
+  def schedule_multiple_events
+    ActiveJob::Serializers.add_serializers EventSerializer
+
+    event_1 = Examples::OrderPlaced.new(order_id: 1)
+    event_2 = Examples::PaymentReceived.new(order_id: 2)
+
+    publish(event_1, event_2)
   end
 
-  # def publish(events)
-  #   events = Array(events)
-  #
-  #   events.map(&:destinations).flatten.each do |destination|
-  #     DeliverEventJob.perform_later(destination, event: event)
-  #   end
-  # end
+  def publish(*events)
+    correlation_id = events.first.correlation_id
+
+    events.each do |event|
+      event.correlation_id = correlation_id
+
+      event.destinations.each do |name, _|
+        DeliverEventJob.perform_later(name, event)
+      end
+    end
+  end
 end
