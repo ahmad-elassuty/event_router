@@ -5,7 +5,7 @@ module EventRouter
     module Notifications
     module_function
 
-      def order_placed(event)
+      def order_placed(event:, payload:)
         binding.pry
         true
       end

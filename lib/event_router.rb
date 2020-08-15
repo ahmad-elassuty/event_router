@@ -37,8 +37,10 @@ module EventRouter
     events.each do |event|
       event.correlation_id = correlation_id
 
-      event.destinations.each do |name, _|
-        DeliverEventJob.perform_later(name, event)
+      event.destinations.each do |name, destination|
+        payload = destination.prefetch_payload? ? destination.payload_for(event) : nil
+
+        DeliverEventJob.perform_later(name, event, payload)
       end
     end
   end

@@ -5,7 +5,6 @@ require "securerandom"
 module EventRouter
   class Event
     attr_reader :uid, :created_at, :payload
-
     attr_accessor :correlation_id
 
     class_attribute :destinations, default: {}, instance_writer: false
@@ -21,13 +20,14 @@ module EventRouter
       {
         uid: uid,
         correlation_id: correlation_id,
+        name: name,
         payload: payload,
         created_at: created_at,
         _er_klass: self.class.name
       }
     end
 
-    def underscore_name
+    def name
       self.class.name.demodulize.underscore
     end
 
