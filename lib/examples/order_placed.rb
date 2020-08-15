@@ -8,8 +8,9 @@ module EventRouter
 
       deliver_to :event_store,
         handler: EventRouter::Examples::EventStore::OrderPlaced,
-        method: :handle,
-        prefetch_payload: true
+        handler_method: :handle,
+        prefetch_payload: true,
+        payload_method: :store_payload
 
       # Custom payload methods
       def notifications_payload
@@ -19,7 +20,7 @@ module EventRouter
         }
       end
 
-      def event_store_payload
+      def store_payload
         {
           id: payload[:order_id]
         }
