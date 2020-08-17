@@ -1,6 +1,7 @@
 require "event_router/version"
 require "event_router/error"
 require "active_job"
+require "event_router/configuration"
 require "event_router/destination"
 require "event_router/event"
 require "event_router/event_serializer"
@@ -43,5 +44,14 @@ module EventRouter
         DeliverEventJob.perform_later(name, event, payload)
       end
     end
+  end
+
+  # Configurations
+  def configuration
+    @configuration ||= Configuration.new
+  end
+
+  def configure
+    yield configuration if block_given?
   end
 end
