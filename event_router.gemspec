@@ -31,5 +31,4 @@ Gem::Specification.new do |spec|
   # Development dependencies
   spec.add_development_dependency "sidekiq"
   spec.add_development_dependency "pry-byebug"
-  spec.add_development_dependency "rspec"
 end
