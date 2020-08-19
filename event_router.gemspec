@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "A simple event router gem"
   spec.homepage      = "https://github.com/ahmad-elassuty/event_router"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
 
   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
