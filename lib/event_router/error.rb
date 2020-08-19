@@ -3,4 +3,3 @@
 module EventRouter
   class Error < StandardError; end
 end
-

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../error"
+require_relative '../error'
 
 module EventRouter
   module Errors
@@ -14,8 +14,7 @@ module EventRouter
       end
 
       def message
-        "Unsupported #{@option} for #{@config} configuration." +
-          " Currently supports #{@supported_options}"
+        "Unsupported #{@option} for #{@config} configuration. Currently supports #{@supported_options}"
       end
     end
   end

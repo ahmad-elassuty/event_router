@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "securerandom"
+require 'securerandom'
 
 module EventRouter
   class Event
@@ -46,5 +46,4 @@ module EventRouter
       end
     end
   end
-
 end

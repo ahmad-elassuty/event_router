@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "errors/unsupported_option_error"
+require_relative 'errors/unsupported_option_error'
 
 module EventRouter
   class Configuration
@@ -38,14 +38,14 @@ module EventRouter
       @delivery_strategy = strategy
     end
 
-  private
+    private
 
     def validate_inclusion!(config, option, supported_options)
-      unless supported_options.include?(option)
-        raise Errors::UnsupportedOptionError.new(
-          config: config, option: option, supported_options: supported_options
-        )
-      end
+      return if supported_options.include?(option)
+
+      raise Errors::UnsupportedOptionError.new(
+        config: config, option: option, supported_options: supported_options
+      )
     end
   end
 end
