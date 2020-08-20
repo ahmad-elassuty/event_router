@@ -7,7 +7,12 @@ module EventRouter
     self.queue_adapter = :sidekiq
 
     def perform(destination, event, payload)
-      event.destinations[destination]&.process(event, payload)
+      destination = event.destinations[destination]
+
+      return if destination.blank?
+
+      payload ||= destination.payload_for(event)
+      destination.process(event, payload)
     end
   end
 end

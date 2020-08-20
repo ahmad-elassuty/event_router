@@ -31,7 +31,7 @@ module EventRouter
       handler.send(
         handler_method || event.name,
         event: event,
-        payload: payload || payload_for(event)
+        payload: payload
       )
     end
 
