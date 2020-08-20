@@ -3,15 +3,13 @@
 module EventRouter
   module Examples
     module Notifications
-    module_function
+      module_function
 
-      def order_placed(event:, payload:)
-        binding.pry
+      def order_placed(_args)
         true
       end
 
-      def payment_received(event)
-        binding.pry
+      def payment_received(_event)
         true
       end
     end

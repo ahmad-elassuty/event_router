@@ -4,7 +4,7 @@ module EventRouter
   class Destination
     # Attributes
     attr_reader :name, :handler, :handler_method,
-      :prefetch_payload, :payload_method
+                :prefetch_payload, :payload_method
 
     # Constants
     DEFAULT_ATTRIBUTES = {
@@ -31,7 +31,7 @@ module EventRouter
       handler.send(
         handler_method || event.name,
         event: event,
-        payload: payload || payload_for(event)
+        payload: payload
       )
     end
 

@@ -4,8 +4,7 @@ module EventRouter
   module Examples
     module EventStore
       class OrderPlaced
-        def self.handle(event)
-          binding.pry
+        def self.handle(_event)
           true
         end
       end

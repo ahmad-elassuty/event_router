@@ -4,13 +4,13 @@ module EventRouter
   module Examples
     class OrderPlaced < EventRouter::Event
       deliver_to :notifications,
-        handler: EventRouter::Examples::Notifications
+                 handler: EventRouter::Examples::Notifications
 
       deliver_to :event_store,
-        handler: EventRouter::Examples::EventStore::OrderPlaced,
-        handler_method: :handle,
-        prefetch_payload: true,
-        payload_method: :store_payload
+                 handler: EventRouter::Examples::EventStore::OrderPlaced,
+                 handler_method: :handle,
+                 prefetch_payload: true,
+                 payload_method: :store_payload
 
       # Custom payload methods
       def notifications_payload

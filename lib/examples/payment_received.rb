@@ -4,7 +4,7 @@ module EventRouter
   module Examples
     class PaymentReceived < EventRouter::Event
       deliver_to :notifications,
-        handler: EventRouter::Examples::Notifications
+                 handler: EventRouter::Examples::Notifications
     end
   end
 end

@@ -12,15 +12,15 @@ module EventRouter
     end
 
     def deserialize(hash)
-      hash["_er_klass"].constantize.new(
-        uid: hash["uid"],
-        correlation_id: hash["correlation_id"],
-        created_at: Time.parse(hash["created_at"]),
-        **ActiveJob::Arguments.deserialize(hash["payload"]).to_h
+      hash['_er_klass'].constantize.new(
+        uid: hash['uid'],
+        correlation_id: hash['correlation_id'],
+        created_at: Time.parse(hash['created_at']),
+        **ActiveJob::Arguments.deserialize(hash['payload']).to_h
       )
     end
 
-  private
+    private
 
     def klass
       Event

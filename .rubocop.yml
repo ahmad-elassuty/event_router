@@ -1,0 +1,16 @@
+AllCops:
+  NewCops: enable
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - spec/**/*
+    - bin/**/*
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+# [TODO] Turn on documentation rule
+Style/Documentation:
+  Enabled: false
+
