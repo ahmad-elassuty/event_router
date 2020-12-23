@@ -12,7 +12,7 @@ module EventRouter
                  prefetch_payload: true,
                  payload_method: :store_payload
 
-      # Custom payload methods
+      # Extra payload
       def notifications_payload
         {
           id: payload[:order_id],

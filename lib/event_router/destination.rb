@@ -4,7 +4,7 @@ module EventRouter
   class Destination
     # Attributes
     attr_reader :name, :handler, :handler_method,
-                :prefetch_payload, :payload_method
+                :prefetch_payload, :payload_method, :event
 
     # Constants
     DEFAULT_ATTRIBUTES = {
@@ -39,14 +39,10 @@ module EventRouter
       @prefetch_payload
     end
 
-    def payload_for(event)
-      return event.payload unless custom_payload?(event)
+    def extra_payload(event)
+      return nil unless event.respond_to?(payload_method)
 
       event.send(payload_method)
-    end
-
-    def custom_payload?(event)
-      event.respond_to?(payload_method)
     end
   end
 end

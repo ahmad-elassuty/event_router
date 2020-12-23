@@ -1,41 +1,47 @@
 # frozen_string_literal: true
 
 require_relative 'errors/unsupported_option_error'
+require_relative 'serializer'
+require_relative 'publisher'
 
 module EventRouter
   class Configuration
-    attr_reader :delivery_adapter, :delivery_strategy
-
-    # Constants
-    DELIVERY_ADAPTERS = %i[
-      memory
-    ].freeze
-
-    DELIVERY_STRATEGIES = %i[
-      async
-      sync
-    ].freeze
-
-    DEFAULT_CONFIGURATIONS = {
-      delivery_adapter: :memory,
-      delivery_strategy: :async
-    }.freeze
+    attr_reader :delivery_adapter, :serializer_adapter, :delivery_adapters, :serializer_adapters
 
     def initialize
-      @delivery_adapter   = DEFAULT_CONFIGURATIONS[:delivery_adapter]
-      @delivery_strategy  = DEFAULT_CONFIGURATIONS[:delivery_strategy]
+      @delivery_adapter     = :memory
+      @serializer_adapter   = :json
+      @delivery_adapters    = Publisher::ADAPTERS
+      @serializer_adapters  = Serializer::ADAPTERS
     end
 
     def delivery_adapter=(adapter)
-      validate_inclusion(:delivery_adapter, adapter, DELIVERY_ADAPTERS)
+      validate_inclusion(:delivery_adapter, adapter, @delivery_adapters)
 
       @delivery_adapter = adapter
     end
 
-    def delivery_strategy=(strategy)
-      validate_inclusion(:delivery_strategy, strategy, DELIVERY_STRATEGIES)
+    def delivery_adapter_class(name)
+      @delivery_adapters[name]
+    end
 
-      @delivery_strategy = strategy
+    def register_delivery_adapter(name, delivery_adapter_class)
+      @delivery_adapters[name] = delivery_adapter_class
+    end
+
+    def serializer_adapter=(adapter)
+      validate_inclusion(:serializer_adapter, adapter, @serializer_adapters)
+
+      Serializer.setup(adapter)
+      @serializer_adapter = adapter
+    end
+
+    def serializer_adapter_class(name)
+      @serializer_adapters[name]
+    end
+
+    def register_serializer(name, serializer_adapter_class)
+      @serializer_adapters[name] = serializer_adapter_class
     end
 
     private

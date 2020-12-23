@@ -5,12 +5,19 @@ module EventRouter
     module Notifications
       module_function
 
-      def order_placed(_args)
-        true
+      def order_placed(event:, payload:)
+        puts ('=' * 10) + '[Notifications]' + ('=' * 10)
+        puts 'Received order_placed'
+        puts event.inspect
+        puts payload.inspect
+        puts '=' * 35
       end
 
-      def payment_received(_event)
-        true
+      def payment_received(event:)
+        puts ('=' * 10) + '[Notifications]' + ('=' * 10)
+        puts 'Received payment_received'
+        puts event.inspect
+        puts '=' * 35
       end
     end
   end

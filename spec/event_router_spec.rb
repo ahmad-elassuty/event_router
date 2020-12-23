@@ -14,8 +14,8 @@ RSpec.describe EventRouter do
 
     it 'memoizes the configurations' do
       expect do
-        EventRouter.configure { |c| c.delivery_strategy = :sync }
-      end.to change { EventRouter.configuration.delivery_strategy }.to(:sync)
+        EventRouter.configure { |c| c.delivery_adapter = :sidekiq }
+      end.to change { EventRouter.configuration.delivery_adapter }.to(:sidekiq)
     end
   end
 end
