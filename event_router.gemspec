@@ -31,7 +31,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport'
 
   # Development dependencies
-  spec.add_development_dependency 'msgpack'
   spec.add_development_dependency 'oj'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-byebug'
