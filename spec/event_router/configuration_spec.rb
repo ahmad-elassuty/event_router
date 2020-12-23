@@ -8,7 +8,7 @@ RSpec.describe EventRouter::Configuration do
   end
 
   describe '#delivery_adapter=' do
-    EventRouter::Publisher::ADAPTERS.each do |adapter|
+    EventRouter::Publisher::ADAPTERS.each do |adapter, _adapter_class|
       it "supports #{adapter} adapter" do
         expect { config.delivery_adapter = adapter }.to_not raise_error
       end
@@ -29,10 +29,10 @@ RSpec.describe EventRouter::Configuration do
 
   describe '#serializer_adapter' do
     context 'by default' do
-      it { expect(config.serializer_adapter).to eq(EventRouter::Serializer::JSON) }
+      it { expect(config.serializer_adapter).to eq(:json) }
     end
 
-    EventRouter::Serializer::ADAPTERS.each do |adapter|
+    EventRouter::Serializer::ADAPTERS.each do |adapter, _adapter_class|
       it "supports #{adapter} adapter" do
         expect { config.serializer_adapter = adapter }.to_not raise_error
       end

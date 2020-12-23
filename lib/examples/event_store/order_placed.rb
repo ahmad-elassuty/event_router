@@ -5,7 +5,7 @@ module EventRouter
     module EventStore
       class OrderPlaced
         def self.handle(event:, payload:)
-          puts ('=' * 10) + '[EventStore]' + ('=' * 10)
+          puts "#{'=' * 10} [EventStore] #{'=' * 10}"
           puts 'Received order_placed'
           puts event.inspect
           puts payload.inspect

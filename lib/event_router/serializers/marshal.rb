@@ -11,7 +11,7 @@ module EventRouter
         end
 
         def deserialize(payload)
-          ::Marshal.restore(payload)
+          ::Marshal.restore(payload) # rubocop:disable Security/MarshalLoad
         end
       end
     end

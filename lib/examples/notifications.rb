@@ -6,7 +6,7 @@ module EventRouter
       module_function
 
       def order_placed(event:, payload:)
-        puts ('=' * 10) + '[Notifications]' + ('=' * 10)
+        puts "#{'=' * 10} [Notifications] #{'=' * 10}"
         puts 'Received order_placed'
         puts event.inspect
         puts payload.inspect
@@ -14,7 +14,7 @@ module EventRouter
       end
 
       def payment_received(event:)
-        puts ('=' * 10) + '[Notifications]' + ('=' * 10)
+        puts "#{'=' * 10} [Notifications] #{'=' * 10}"
         puts 'Received payment_received'
         puts event.inspect
         puts '=' * 35
