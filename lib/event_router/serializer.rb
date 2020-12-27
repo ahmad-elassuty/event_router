@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'serializers/json'
+require_relative 'serializers/oj'
 require_relative 'serializers/marshal'
 
 module EventRouter
@@ -9,7 +10,8 @@ module EventRouter
 
     ADAPTERS = {
       marshal: EventRouter::Serializers::Marshal,
-      json: EventRouter::Serializers::Json
+      json: EventRouter::Serializers::Json,
+      oj: EventRouter::Serializers::Oj
     }.freeze
 
     def setup(adapter)

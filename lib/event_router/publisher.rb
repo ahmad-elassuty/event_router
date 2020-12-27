@@ -12,8 +12,8 @@ module EventRouter
       sidekiq: EventRouter::DeliveryAdapters::Sidekiq
     }.freeze
 
-    def publish(events, delivery_adapter:)
-      adapter_class = delivery_adapter_class(delivery_adapter)
+    def publish(events, adapter:)
+      adapter_class = delivery_adapter_class(adapter)
 
       Array(events).each do |event|
         event.destinations.each do |name, destination|

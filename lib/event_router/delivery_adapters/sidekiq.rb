@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 require_relative 'base'
-require_relative 'sidekiq_delivery_job'
+require_relative 'jobs/event_delivery_job'
 
 module EventRouter
   module DeliveryAdapters
     class Sidekiq < Base
-      class << self
-        def deliver(destination, event, payload)
-          serialized_event    = EventRouter::Serializer.serialize(event)
-          serialized_payload  = EventRouter::Serializer.serialize(payload)
+      def self.deliver(destination_name, event, payload)
+        serialized_event    = EventRouter::Serializer.serialize(event)
+        serialized_payload  = EventRouter::Serializer.serialize(payload)
 
-          SidekiqDeliveryJob.perform_async(destination, serialized_event, serialized_payload)
-        end
+        Jobs::EventDeliveryJob.perform_async(
+          destination_name, serialized_event, serialized_payload
+        )
       end
     end
   end

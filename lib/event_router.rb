@@ -16,8 +16,8 @@ require 'examples/payment_received'
 module EventRouter
   module_function
 
-  def publish(events, delivery_adapter: EventRouter.configuration.delivery_adapter)
-    EventRouter::Publisher.publish(events, delivery_adapter: delivery_adapter)
+  def publish(events, adapter: EventRouter.configuration.delivery_adapter)
+    EventRouter::Publisher.publish(events, adapter: adapter)
   end
 
   def configuration

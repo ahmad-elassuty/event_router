@@ -27,6 +27,8 @@ module EventRouter
       }
     end
 
+    alias to_h to_hash
+
     def name
       self.class.name.demodulize.underscore
     end

@@ -13,7 +13,7 @@ RSpec.describe EventRouter::Publisher do
 
     EventRouter::Publisher::ADAPTERS.each do |adapter, adapter_class|
       context "when adapter is set to #{adapter}" do
-        subject { described_class.publish(event, delivery_adapter: adapter) }
+        subject { described_class.publish(event, adapter: adapter) }
 
         it 'delivers the event to every defined destination' do
           expect(adapter_class).to receive(:deliver).once.with(:dummy_handler_1, event, nil)
