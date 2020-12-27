@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'delivery_adapters/memory'
+require_relative 'delivery_adapters/sync'
 require_relative 'delivery_adapters/sidekiq'
 
 module EventRouter
@@ -8,7 +8,7 @@ module EventRouter
     module_function
 
     ADAPTERS = {
-      memory: EventRouter::DeliveryAdapters::Memory,
+      sync: EventRouter::DeliveryAdapters::Sync,
       sidekiq: EventRouter::DeliveryAdapters::Sidekiq
     }.freeze
 

@@ -3,7 +3,7 @@ RSpec.describe EventRouter::Configuration do
 
   describe '.new' do
     it 'initializes with memory delivery adapter by default' do
-      expect(subject.delivery_adapter).to eq(:memory)
+      expect(subject.delivery_adapter).to eq(:sync)
     end
   end
 

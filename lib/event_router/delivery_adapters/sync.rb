@@ -4,14 +4,16 @@ require_relative 'base'
 
 module EventRouter
   module DeliveryAdapters
-    class Memory < Base
+    class Sync < Base
       class << self
         def deliver(destination, event, payload)
           destination = event.destinations[destination]
 
           return if destination.blank?
 
-          destination.process(event, payload || destination.extra_payload(event))
+          payload = destination.prefetch_payload? ? payload : destination.extra_payload(event)
+
+          destination.process(event, payload)
         end
       end
     end

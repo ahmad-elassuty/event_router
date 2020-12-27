@@ -9,7 +9,7 @@ module EventRouter
     attr_reader :delivery_adapter, :serializer_adapter, :delivery_adapters, :serializer_adapters
 
     def initialize
-      @delivery_adapter     = :memory
+      @delivery_adapter     = :sync
       @serializer_adapter   = :json
       @delivery_adapters    = Publisher::ADAPTERS
       @serializer_adapters  = Serializer::ADAPTERS
