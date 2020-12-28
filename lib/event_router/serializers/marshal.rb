@@ -6,12 +6,12 @@ module EventRouter
   module Serializers
     class Marshal < Base
       class << self
-        def serialize(event)
-          ::Marshal.dump(event)
+        def serialize(object)
+          ::Marshal.dump(object)
         end
 
-        def deserialize(payload)
-          ::Marshal.restore(payload) # rubocop:disable Security/MarshalLoad
+        def deserialize(string)
+          ::Marshal.restore(string) # rubocop:disable Security/MarshalLoad
         end
       end
     end

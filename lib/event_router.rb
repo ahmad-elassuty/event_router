@@ -3,15 +3,10 @@
 require 'event_router/version'
 require 'event_router/error'
 
-require 'event_router/configuration'
 require 'event_router/event'
-require 'event_router/destination'
 require 'event_router/publisher'
-
-require 'examples/notifications'
-require 'examples/event_store/order_placed'
-require 'examples/order_placed'
-require 'examples/payment_received'
+require 'event_router/serializer'
+require 'event_router/configuration'
 
 module EventRouter
   module_function

@@ -14,7 +14,8 @@ module EventRouter
       end
 
       def message
-        "Unsupported #{@option} for #{@config} configuration. Currently supports #{@supported_options}"
+        "Unsupported #{@option} for #{@config} configuration. Currently supports #{@supported_options}. " \
+          "Please consider registering the adapter before referencing it."
       end
     end
   end

@@ -7,12 +7,12 @@ module EventRouter
   module Serializers
     class Oj < Base
       class << self
-        def serialize(event)
-          ::Oj.dump(event, mode: :object)
+        def serialize(object)
+          ::Oj.dump(object, mode: :object)
         end
 
-        def deserialize(payload)
-          ::Oj.load(payload, mode: :object)
+        def deserialize(string)
+          ::Oj.load(string, mode: :object)
         end
       end
     end

@@ -5,14 +5,12 @@ require_relative 'base'
 module EventRouter
   module DeliveryAdapters
     class Sync < Base
-      def self.deliver(destination, event, payload)
-        destination = event.destinations[destination]
+      def self.deliver(event)
+        event.destinations.each do |name, destination|
+          payload = destination.extra_payload(event)
 
-        return if destination.blank?
-
-        payload = destination.prefetch_payload? ? payload : destination.extra_payload(event)
-
-        destination.process(event, payload)
+          destination.process(event, payload)
+        end
       end
     end
   end

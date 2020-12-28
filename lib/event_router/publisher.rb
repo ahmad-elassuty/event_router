@@ -1,27 +1,16 @@
 # frozen_string_literal: true
 
-require_relative 'delivery_adapters/sync'
-require_relative 'delivery_adapters/sidekiq'
-
 module EventRouter
   module Publisher
     module_function
 
     ADAPTERS = {
-      sync: EventRouter::DeliveryAdapters::Sync,
-      sidekiq: EventRouter::DeliveryAdapters::Sidekiq
+      sync: { class_name: 'EventRouter::DeliveryAdapters::Sync', path: 'delivery_adapters/sync' },
+      sidekiq: { class_name: 'EventRouter::DeliveryAdapters::Sidekiq', path: 'delivery_adapters/sidekiq' }
     }.freeze
 
     def publish(events, adapter:)
-      adapter_class = delivery_adapter_class(adapter)
-
-      Array(events).each do |event|
-        event.destinations.each do |name, destination|
-          payload = destination.extra_payload(event) if destination.prefetch_payload?
-
-          adapter_class.deliver(name, event, payload)
-        end
-      end
+      Array(events).each { |event| delivery_adapter_class(adapter).deliver(event) }
     end
 
     def delivery_adapter_class(adapter)

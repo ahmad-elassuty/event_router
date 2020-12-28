@@ -1,18 +1,36 @@
 # frozen_string_literal: true
 
 require_relative 'base'
-require_relative 'jobs/event_delivery_job'
+require_relative 'jobs/sidekiq_event_delivery_job'
 
 module EventRouter
   module DeliveryAdapters
     class Sidekiq < Base
-      def self.deliver(destination_name, event, payload)
-        serialized_event    = EventRouter::Serializer.serialize(event)
-        serialized_payload  = EventRouter::Serializer.serialize(payload)
+      REQUIRED_OPTIONS = %i[queue retry]
 
-        Jobs::EventDeliveryJob.perform_async(
-          destination_name, serialized_event, serialized_payload
-        )
+      class << self
+        def validate_options!(options)
+          missing_options = REQUIRED_OPTIONS - options.compact.keys
+
+          return true if missing_options.empty?
+
+          raise Errors::RequiredOptionError.new(options: missing_options, adapter: self)
+        end
+
+        def deliver(event)
+          serialized_event = EventRouter::Serializer.serialize(event)
+
+          event.destinations.each do |name, destination|
+            if destination.prefetch_payload?
+              payload             = destination.extra_payload(event)
+              serialized_payload  = EventRouter::Serializer.serialize(payload)
+            end
+
+            Jobs::SidekiqEventDeliveryJob
+              .set(queue: options[:queue], retry: options[:retry])
+              .perform_async(name, serialized_event, serialized_payload)
+          end
+        end
       end
     end
   end
