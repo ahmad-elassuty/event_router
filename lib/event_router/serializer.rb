@@ -5,7 +5,6 @@ module EventRouter
     module_function
 
     ADAPTERS = {
-      marshal: { class_name: 'EventRouter::Serializers::Marshal', path: 'serializers/marshal' },
       json: { class_name: 'EventRouter::Serializers::Json', path: 'serializers/json' },
       oj: { class_name: 'EventRouter::Serializers::Oj', path: 'serializers/oj' }
     }.freeze
