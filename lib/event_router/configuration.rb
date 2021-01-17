@@ -18,7 +18,7 @@ module EventRouter
       @serializer_adapter = :json
     end
 
-    def delivery_adapter=(adapter)
+    def delivery_adapter=(adapter, opts = {})
       validate_inclusion!(:delivery_adapter, adapter, @delivery_adapters)
 
       @delivery_adapter = adapter
@@ -29,13 +29,9 @@ module EventRouter
     end
 
     def register_delivery_adapter(adapter, opts = {})
-      require_relative Publisher::ADAPTERS[adapter][:path] if Publisher::ADAPTERS.key?(adapter)
+      adapter_class = load_adapter_class(Publisher::ADAPTERS, adapter) || opts[:adapter_class]
 
-      adapter_class = opts[:adapter_class]
-      adapter_class ||= Kernel.const_get(Publisher::ADAPTERS[adapter][:class_name])
-
-      adapter_class.options = opts
-
+      adapter_class.options       = opts
       @delivery_adapters[adapter] = adapter_class
     end
 
@@ -50,15 +46,19 @@ module EventRouter
     end
 
     def register_serializer_adapter(adapter, opts = {})
-      require_relative Serializer::ADAPTERS[adapter][:path] if Serializer::ADAPTERS.key?(adapter)
-
-      adapter_class = opts[:adapter_class]
-      adapter_class ||= Kernel.const_get(Serializer::ADAPTERS[adapter][:class_name])
+      adapter_class = load_adapter_class(Serializer::ADAPTERS, adapter) || opts[:adapter_class]
 
       @serializer_adapters[adapter] = adapter_class
     end
 
     private
+
+    def load_adapter_class(adapters, adapter)
+      return nil unless adapters.key?(adapter)
+
+      require_relative adapters[adapter][:path]
+      Kernel.const_get(adapters[adapter][:adapter_class])
+    end
 
     def validate_inclusion!(config, option, supported_options)
       return if supported_options.include?(option)

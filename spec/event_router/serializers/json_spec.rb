@@ -1,21 +1,20 @@
+require 'event_router/serializers/json'
+
 RSpec.describe EventRouter::Serializers::Json do
+  let(:input)   { { sym_key: 1, 'str_key' => 'b', 'bool' => true, c: { a: 1 } } }
+  let(:output)  { '{"sym_key":1,"str_key":"b","bool":true,"c":{"a":1}}' }
+
   describe '.serialize' do
     subject { described_class.serialize(input) }
 
-    let(:input)           { { sym_key: 1, 'str_key' => 'b', 'bool' => true, c: { a: 1 } } }
-    let(:expected_output) { '{"sym_key":1,"str_key":"b","bool":true,"c":{"a":1},"event_class":"Hash"}' }
-
-    it { is_expected.to eq(expected_output) }
+    it { is_expected.to eq(output) }
   end
 
-  xdescribe '.deserialize' do
-    subject { described_class.deserialize(input) }
+  describe '.deserialize' do
+    subject { described_class.deserialize(output) }
 
-    context "event_class is not defined" do
-      let(:input) { '{"sym_key":1,"str_key":"b","bool":true,"c":{"a":1},"event_class":"Hash"}' }
-      let(:expected_output) { { 'sym_key' => 1, 'str_key' => 'b', 'bool' => true, 'c' => { 'a' => 1 } } }
+    let(:input) { { 'sym_key' => 1, 'str_key' => 'b', 'bool' => true, 'c' => { 'a' => 1 } } }
 
-      it { is_expected.to eq(expected_output) }
-    end
+    it { is_expected.to eq(input) }
   end
 end

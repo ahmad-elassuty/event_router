@@ -1,43 +1,53 @@
 RSpec.describe EventRouter::Serializer do
+  describe 'ADAPTERS' do
+    it { expect(described_class::ADAPTERS).to include(:json, :oj) }
+
+    it 'defines json attributes' do
+      expect(described_class::ADAPTERS[:json]).to eq(
+        adapter_class: 'EventRouter::Serializers::Json',
+        path: 'serializers/json'
+      )
+    end
+
+    it 'defines oj attributes' do
+      expect(described_class::ADAPTERS[:oj]).to eq(
+        adapter_class: 'EventRouter::Serializers::Oj',
+        path: 'serializers/oj'
+      )
+    end
+  end
+
   describe '.serialize' do
-    let(:event) { EventRouter::Event.new(order_id: 1, delivered_at: Time.now) }
+    subject { described_class.serialize(event, adapter: :test_adapter) }
 
-    EventRouter::Serializer::ADAPTERS.each do |adapter, adapter_class|
-      context "when adapter is set to #{adapter}" do
-        subject { described_class.serialize(event, adapter: adapter) }
+    let(:event) { DummyEvent.new }
 
-        it 'delegates to the serializer.serialize class method' do
-          expect(adapter_class).to receive(:serialize).once.with(event)
+    before do
+      allow(EventRouter.configuration).to receive(:serializer_adapter_class) { DummySerializerAdapter }
+    end
 
-          subject
-        end
-      end
+    it 'delegates the event to the adapter' do
+      expect(EventRouter.configuration).to receive(:serializer_adapter_class).once.with(:test_adapter)
+      expect(DummySerializerAdapter).to receive(:serialize).once.with(event)
+
+      subject
     end
   end
 
   describe '.deserialize' do
-    let(:payload) { 'payload' }
+    subject { described_class.deserialize(payload, adapter: :test_adapter) }
 
-    EventRouter::Serializer::ADAPTERS.each do |adapter, adapter_class|
-      context "when adapter is set to #{adapter}" do
-        subject { described_class.deserialize(payload, adapter: adapter) }
+    let(:payload) { {a: 1}.to_json }
 
-        it 'delegates to the serializer.deserialize class method' do
-          expect(adapter_class).to receive(:deserialize).once.with(payload)
-
-          subject
-        end
-      end
+    before do
+      allow(EventRouter.configuration).to receive(:serializer_adapter_class) { DummySerializerAdapter }
     end
-  end
 
-  describe '.serializer_class' do
-    EventRouter::Serializer::ADAPTERS.each do |adapter, adapter_class|
-      context "when adapter is #{adapter}" do
-        subject { described_class.serializer_class(adapter) }
+    it 'delegates the event with the adapter' do
+      expect(EventRouter.configuration).to receive(:serializer_adapter_class).once.with(:test_adapter)
+      expect(DummySerializerAdapter).to receive(:deserialize).once.with(payload)
 
-        it { expect(subject).to eq(adapter_class) }
-      end
+      subject
     end
   end
 end

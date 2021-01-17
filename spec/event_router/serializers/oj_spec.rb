@@ -1,3 +1,5 @@
+require 'event_router/serializers/oj'
+
 RSpec.describe EventRouter::Serializers::Oj do
   let(:input)   { { sym_key: 1, 'str_key' => 'b', 'bool' => true, c: { a: 1 } } }
   let(:output)  { '{":sym_key":1,"str_key":"b","bool":true,":c":{":a":1}}' }

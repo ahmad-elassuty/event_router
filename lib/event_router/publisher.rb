@@ -5,16 +5,20 @@ module EventRouter
     module_function
 
     ADAPTERS = {
-      sync: { class_name: 'EventRouter::DeliveryAdapters::Sync', path: 'delivery_adapters/sync' },
-      sidekiq: { class_name: 'EventRouter::DeliveryAdapters::Sidekiq', path: 'delivery_adapters/sidekiq' }
+      sync: { adapter_class: 'EventRouter::DeliveryAdapters::Sync', path: 'delivery_adapters/sync' },
+      sidekiq: { adapter_class: 'EventRouter::DeliveryAdapters::Sidekiq', path: 'delivery_adapters/sidekiq' }
     }.freeze
 
     def publish(events, adapter:)
-      Array(events).each { |event| delivery_adapter_class(adapter).deliver(event) }
+      adapter_class = delivery_adapter(adapter)
+
+      Array(events).each { |event| adapter_class.deliver(event) }
     end
 
-    def delivery_adapter_class(adapter)
+    def delivery_adapter(adapter)
       EventRouter.configuration.delivery_adapter_class(adapter)
     end
+
+    private_class_method :delivery_adapter
   end
 end

@@ -1,37 +1,36 @@
 RSpec.describe EventRouter::Publisher do
-  describe '.publish' do
-    class DummyEvent < EventRouter::Event
-      deliver_to :dummy_handler_1, handler: nil
-      deliver_to :dummy_handler_2, handler: nil, prefetch_payload: true
+  describe 'ADAPTERS' do
+    it { expect(described_class::ADAPTERS).to include(:sync, :sidekiq) }
 
-      def dummy_handler_2_payload
-        { id: 'test' }
-      end
+    it 'defines sync attributes' do
+      expect(described_class::ADAPTERS[:sync]).to eq(
+        adapter_class: 'EventRouter::DeliveryAdapters::Sync',
+        path: 'delivery_adapters/sync'
+      )
     end
 
-    let(:event) { DummyEvent.new }
-
-    EventRouter::Publisher::ADAPTERS.each do |adapter, adapter_class|
-      context "when adapter is set to #{adapter}" do
-        subject { described_class.publish(event, adapter: adapter) }
-
-        it 'delivers the event to every defined destination' do
-          expect(adapter_class).to receive(:deliver).once.with(:dummy_handler_1, event, nil)
-          expect(adapter_class).to receive(:deliver).once.with(:dummy_handler_2, event, { id: 'test' })
-
-          subject
-        end
-      end
+    it 'defines sidekiq attributes' do
+      expect(described_class::ADAPTERS[:sidekiq]).to eq(
+        adapter_class: 'EventRouter::DeliveryAdapters::Sidekiq',
+        path: 'delivery_adapters/sidekiq'
+      )
     end
   end
 
-  describe '.delivery_adapter_class' do
-    EventRouter::Publisher::ADAPTERS.each do |adapter, adapter_class|
-      context "when adapter is #{adapter}" do
-        subject { described_class.delivery_adapter_class(adapter) }
+  describe '.publish' do
+    subject { described_class.publish([event, event], adapter: :test_adapter) }
 
-        it { expect(subject).to eq(adapter_class) }
-      end
+    let(:event) { DummyEvent.new }
+
+    before do
+      allow(EventRouter.configuration).to receive(:delivery_adapter_class) { DummyDeliveryAdapter }
+    end
+
+    it 'delivers the event to the adapter' do
+      expect(EventRouter.configuration).to receive(:delivery_adapter_class).once.with(:test_adapter)
+      expect(DummyDeliveryAdapter).to receive(:deliver).twice.with(event)
+
+      subject
     end
   end
 end

@@ -1,7 +1,11 @@
 require 'bundler/setup'
 require 'event_router'
+require 'test_adapters'
+require 'test_events'
 
 RSpec.configure do |config|
+  config.formatter = :documentation
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
 

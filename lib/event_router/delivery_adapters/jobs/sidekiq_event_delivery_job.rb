@@ -10,13 +10,13 @@ module EventRouter
         include ::Sidekiq::Worker
 
         def perform(destination_name, serialized_event, serialized_payload)
-          event       = EventRouter::Serializer.deserialize(serialized_event)
+          event       = EventRouter.deserialize(serialized_event)
           destination = event.destinations[destination_name.to_sym]
 
           return unless destination
 
           payload = if destination.prefetch_payload?
-                      EventRouter::Serializer.deserialize(serialized_payload)
+                      EventRouter.deserialize(serialized_payload)
                     else
                       destination.extra_payload(event)
                     end

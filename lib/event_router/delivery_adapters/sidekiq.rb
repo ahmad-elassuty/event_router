@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'base'
 require_relative 'jobs/sidekiq_event_delivery_job'
 
 module EventRouter
@@ -18,12 +17,12 @@ module EventRouter
         end
 
         def deliver(event)
-          serialized_event = EventRouter::Serializer.serialize(event)
+          serialized_event = EventRouter.serialize(event)
 
           event.destinations.each do |name, destination|
             if destination.prefetch_payload?
               payload             = destination.extra_payload(event)
-              serialized_payload  = EventRouter::Serializer.serialize(payload)
+              serialized_payload  = EventRouter.serialize(payload)
             end
 
             Jobs::SidekiqEventDeliveryJob
