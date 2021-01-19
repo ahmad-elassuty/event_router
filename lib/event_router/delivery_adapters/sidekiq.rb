@@ -5,7 +5,7 @@ require_relative 'jobs/sidekiq_event_delivery_job'
 module EventRouter
   module DeliveryAdapters
     class Sidekiq < Base
-      REQUIRED_OPTIONS = %i[queue retry]
+      REQUIRED_OPTIONS = %i[queue retry].freeze
 
       class << self
         def validate_options!(options)

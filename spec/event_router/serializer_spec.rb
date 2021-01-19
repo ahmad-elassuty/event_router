@@ -37,7 +37,7 @@ RSpec.describe EventRouter::Serializer do
   describe '.deserialize' do
     subject { described_class.deserialize(payload, adapter: :test_adapter) }
 
-    let(:payload) { {a: 1}.to_json }
+    let(:payload) { { a: 1 }.to_json }
 
     before do
       allow(EventRouter.configuration).to receive(:serializer_adapter_class) { DummySerializerAdapter }

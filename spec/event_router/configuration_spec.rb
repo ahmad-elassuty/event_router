@@ -16,8 +16,8 @@ RSpec.describe EventRouter::Configuration do
   describe '#delivery_adapter=' do
     subject { config.delivery_adapter = :test_adapter }
 
-    context "when adapter is registered" do
-      before { config.register_delivery_adapter(:test_adapter, adapter_class: DummyDeliveryAdapter)  }
+    context 'when adapter is registered' do
+      before { config.register_delivery_adapter(:test_adapter, adapter_class: DummyDeliveryAdapter) }
 
       it 'does not raise error' do
         expect { subject }.to_not raise_error
@@ -62,8 +62,8 @@ RSpec.describe EventRouter::Configuration do
   describe '#serializer_adapter=' do
     subject { config.serializer_adapter = :test_adapter }
 
-    context "when adapter is registered" do
-      before { config.register_serializer_adapter(:test_adapter, adapter_class: DummySerializerAdapter)  }
+    context 'when adapter is registered' do
+      before { config.register_serializer_adapter(:test_adapter, adapter_class: DummySerializerAdapter) }
 
       it 'does not raise error' do
         expect { subject }.to_not raise_error

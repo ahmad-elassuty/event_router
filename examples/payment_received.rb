@@ -3,6 +3,6 @@
 module Examples
   class PaymentReceived < EventRouter::Event
     deliver_to :notifications,
-                handler: Examples::Notifications
+               handler: Examples::Notifications
   end
 end

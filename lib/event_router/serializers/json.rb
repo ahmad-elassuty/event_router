@@ -5,7 +5,7 @@ require 'json'
 module EventRouter
   module Serializers
     class Json < Base
-      EVENT_CLASS_ATTRIBUTE_NAME = 'er_class'.freeze
+      EVENT_CLASS_ATTRIBUTE_NAME = 'er_class'
 
       class << self
         def serialize(object)

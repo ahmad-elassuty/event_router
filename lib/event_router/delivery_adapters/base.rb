@@ -18,7 +18,7 @@ module EventRouter
           true
         end
 
-        def deliver(event)
+        def deliver(_event)
           raise NotImplementedError, "deliver method is not implemented for #{name}"
         end
       end

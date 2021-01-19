@@ -17,7 +17,7 @@ RSpec.describe EventRouter::Event do
     subject { DummyEvent.deliver_to(:test_destination, handler: DummyHandler) }
 
     it 'creates a new destination on the class level' do
-      expect{ subject }.to change { DummyEvent.destinations.count }.by(1)
+      expect { subject }.to change { DummyEvent.destinations.count }.by(1)
     end
 
     it 'adds the new destination' do

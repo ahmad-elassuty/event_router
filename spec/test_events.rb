@@ -1,5 +1,6 @@
 class DummyHandler
   def self.dummy_event(event:, payload:); end
+
   def self.custom_handler(event:, payload:); end
 end
 

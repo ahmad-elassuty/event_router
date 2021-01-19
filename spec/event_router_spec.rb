@@ -28,7 +28,7 @@ RSpec.describe EventRouter do
   describe '.deserialize' do
     subject { EventRouter.deserialize(payload) }
 
-    let(:payload) { {a: 1}.to_json }
+    let(:payload) { { a: 1 }.to_json }
 
     it 'delegates to serializer' do
       expect(EventRouter::Serializer).to receive(:deserialize).once.with(payload, adapter: :json)

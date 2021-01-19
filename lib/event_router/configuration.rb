@@ -18,7 +18,7 @@ module EventRouter
       @serializer_adapter = :json
     end
 
-    def delivery_adapter=(adapter, opts = {})
+    def delivery_adapter=(adapter, _opts = {})
       validate_inclusion!(:delivery_adapter, adapter, @delivery_adapters)
 
       @delivery_adapter = adapter
