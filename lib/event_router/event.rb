@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require 'securerandom'
+require 'active_support/core_ext/class/attribute'
+require 'active_support/core_ext/string/inflections'
+
+require_relative 'destination'
 
 module EventRouter
   class Event
@@ -9,7 +13,7 @@ module EventRouter
 
     class_attribute :destinations, default: {}, instance_writer: false
 
-    def initialize(uid: SecureRandom.uuid, correlation_id: SecureRandom.uuid, created_at: Time.current, **payload)
+    def initialize(uid: SecureRandom.uuid, correlation_id: SecureRandom.uuid, created_at: Time.now, **payload)
       @uid            = uid
       @correlation_id = correlation_id
       @created_at     = created_at
@@ -20,12 +24,12 @@ module EventRouter
       {
         uid: uid,
         correlation_id: correlation_id,
-        name: name,
         payload: payload,
-        created_at: created_at,
-        _er_klass: self.class.name
+        created_at: created_at
       }
     end
+
+    alias to_h to_hash
 
     def name
       self.class.name.demodulize.underscore

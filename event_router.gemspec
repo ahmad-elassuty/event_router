@@ -28,9 +28,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   # Dependencies
-  spec.add_dependency 'activejob'
+  spec.add_dependency 'activesupport'
 
   # Development dependencies
+  spec.add_development_dependency 'oj'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-byebug'
   spec.add_development_dependency 'rspec', '~> 3.0'
