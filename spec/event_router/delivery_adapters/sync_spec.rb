@@ -6,30 +6,21 @@ RSpec.describe EventRouter::DeliveryAdapters::Sync do
 
     let(:event) { DummyEvent.new }
 
-    before do
-      allow(destination).to receive(:process) { true }
-    end
-
-    context 'when destination is missing' do
-      let(:destination_name) { :invalid_destination }
-
-      it { expect { described_class }.to_not raise_error }
-    end
-
-    context 'when prefetch is enabled' do
-      let(:destination_name) { :dummy_handler_2 }
-
-      it 'does not fetch the extra payload' do
-        expect(event).to_not receive(:dummy_handler_1_payload)
-
-        subject
+    it 'fetches the extra payload once per destination' do
+      event.destinations.each do |_name, destination|
+        expect(destination).to receive(:extra_payload).once.with(event)
       end
 
-      it 'it delegates to the destination' do
-        expect(destination).to receive(:process).once.with(event, payload)
+      subject
+    end
 
-        subject
+    it 'delivers the event once per destination' do
+      event.destinations.each do |_name, destination|
+        expect(destination).to receive(:process)
+          .once.with(event, destination.extra_payload(event))
       end
+
+      subject
     end
   end
 end

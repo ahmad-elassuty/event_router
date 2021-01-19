@@ -4,7 +4,7 @@ module EventRouter
   class Destination
     # Attributes
     attr_reader :name, :handler, :handler_method,
-                :prefetch_payload, :payload_method, :event
+                :prefetch_payload, :payload_method
 
     # Constants
     DEFAULT_ATTRIBUTES = {

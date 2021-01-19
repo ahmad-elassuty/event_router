@@ -3,6 +3,7 @@
 require 'securerandom'
 require 'active_support/core_ext/class/attribute'
 require 'active_support/core_ext/string/inflections'
+
 require_relative 'destination'
 
 module EventRouter

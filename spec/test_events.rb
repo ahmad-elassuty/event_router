@@ -1,12 +1,17 @@
-class DummyEvent < EventRouter::Event
-  deliver_to :dummy_handler_1, handler: nil
-  deliver_to :dummy_handler_2, handler: nil, prefetch_payload: true
+class DummyHandler
+  def self.dummy_event(event:, payload:); end
+  def self.custom_handler(event:, payload:); end
+end
 
-  def dummy_handler_1_payload
+class DummyEvent < EventRouter::Event
+  deliver_to :default_handler, handler: DummyHandler
+  deliver_to :custom_handler, handler: DummyHandler, handler_method: :custom_handler
+
+  def default_handler_payload
     { id: 't1' }
   end
 
-  def dummy_handler_2_payload
+  def custom_handler_payload
     { id: 't2' }
   end
 end
