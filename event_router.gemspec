@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Ahmad Elassuty']
   spec.email         = ['ahmad.elassuty@gmail.com']
 
-  spec.summary       = 'A simple event router gem'
+  spec.summary       = 'Organise your application domain events side-effects in a simple and intuitive way.'
   spec.homepage      = 'https://github.com/ahmad-elassuty/event_router'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.5.0')
