@@ -14,16 +14,18 @@ RSpec.describe EventRouter::Event do
   end
 
   describe '.deliver_to' do
-    subject { DummyEvent.deliver_to(:test_destination, handler: DummyHandler) }
+    subject { temp_event.deliver_to(:test_destination, handler: DummyHandler) }
+
+    let(:temp_event) { stub_const("#{self.class}::TempEvent", Class.new(EventRouter::Event)) }
 
     it 'creates a new destination on the class level' do
-      expect { subject }.to change { DummyEvent.destinations.count }.by(1)
+      expect { subject }.to change { temp_event.destinations.count }.by(1)
     end
 
     it 'adds the new destination' do
       subject
 
-      expect(DummyEvent.destinations).to have_key(:test_destination)
+      expect(temp_event.destinations).to have_key(:test_destination)
     end
   end
 
