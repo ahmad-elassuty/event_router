@@ -40,7 +40,7 @@ It is very easy to create a new domain event and deliver it to multiple destinat
 
   ```ruby
   class EmailNotifier
-    def self.order_placed(event, payload)
+    def self.order_placed(event:, payload:)
       # [TODO] Handle the event here
     end
   end
