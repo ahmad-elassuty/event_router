@@ -49,7 +49,8 @@ It is very easy to create a new domain event and deliver it to multiple destinat
 - Publish your event:
 
   ```ruby
-  OrderPlaced.publish(order_id: 1, time: Time.now)
+  event = OrderPlaced.new(order_id: 1, time: Time.now)
+  EventRouter.publish(event)
   ```
 
 And your are done! 🎉
