@@ -18,20 +18,20 @@ RSpec.describe EventRouter::DeliveryAdapters::Sidekiq do
       enabled_prefetch_destinations.each do |name, destination|
         serialized_payload = EventRouter.serialize(destination.extra_payload(event))
 
-        expect(EventRouter::DeliveryAdapters::Jobs::SidekiqEventDeliveryJob).to receive(:client_push)
+        expect(EventRouter::DeliveryAdapters::Workers::SidekiqDestinationDeliveryWorker).to receive(:client_push)
           .with(
             'args' => [name, serialized_event, serialized_payload],
-            'class' => EventRouter::DeliveryAdapters::Jobs::SidekiqEventDeliveryJob,
+            'class' => EventRouter::DeliveryAdapters::Workers::SidekiqDestinationDeliveryWorker,
             :queue => adapter_options[:queue],
             :retry => adapter_options[:retry]
           )
       end
 
       disabled_prefetch_destinations.each do |name, _destination|
-        expect(EventRouter::DeliveryAdapters::Jobs::SidekiqEventDeliveryJob).to receive(:client_push)
+        expect(EventRouter::DeliveryAdapters::Workers::SidekiqDestinationDeliveryWorker).to receive(:client_push)
           .with(
             'args' => [name, serialized_event, nil],
-            'class' => EventRouter::DeliveryAdapters::Jobs::SidekiqEventDeliveryJob,
+            'class' => EventRouter::DeliveryAdapters::Workers::SidekiqDestinationDeliveryWorker,
             :queue => adapter_options[:queue],
             :retry => adapter_options[:retry]
           )

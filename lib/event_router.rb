@@ -17,6 +17,10 @@ module EventRouter
     EventRouter::Publisher.publish(events, adapter: adapter)
   end
 
+  def publish_async(events, adapter: EventRouter.configuration.delivery_adapter)
+    EventRouter::Publisher.publish_async(events, adapter: adapter)
+  end
+
   def serialize(event, adapter: EventRouter.configuration.serializer_adapter)
     EventRouter::Serializer.serialize(event, adapter: adapter)
   end

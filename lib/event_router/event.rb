@@ -48,6 +48,10 @@ module EventRouter
       def publish(**attrs)
         EventRouter.publish(new(**attrs))
       end
+
+      def publish_async(**attrs)
+        EventRouter.publish_async(new(**attrs))
+      end
     end
   end
 end

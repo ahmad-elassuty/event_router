@@ -21,6 +21,10 @@ module EventRouter
         def deliver(_event)
           raise NotImplementedError, "deliver method is not implemented for #{name}"
         end
+
+        def deliver_async(_event)
+          raise NotImplementedError, "deliver_async method is not implemented for #{name}"
+        end
       end
     end
   end
