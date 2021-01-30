@@ -11,10 +11,10 @@ module EventRouter
 
           options = EventRouter::DeliveryAdapters::Sidekiq.options
 
-          Helpers::Deliver.yield_destinations(event) do |destination_name, serialized_payload|
+          Helpers::Deliver.yield_destinations(event) do |destination, serialized_payload|
             Workers::SidekiqDestinationDeliveryWorker
               .set(queue: options[:queue], retry: options[:retry])
-              .perform_async(destination_name, serialized_event, serialized_payload)
+              .perform_async(destination.name, serialized_event, serialized_payload)
           end
         end
       end

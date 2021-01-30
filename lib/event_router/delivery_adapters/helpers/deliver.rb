@@ -7,13 +7,13 @@ module EventRouter
         module_function
 
         def yield_destinations(event)
-          event.destinations.each do |destination_name, destination|
+          event.destinations.each do |_name, destination|
             if destination.prefetch_payload?
               payload             = destination.extra_payload(event)
               serialized_payload  = EventRouter.serialize(payload)
             end
 
-            yield destination_name, serialized_payload
+            yield destination, serialized_payload
           end
         end
       end
