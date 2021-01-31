@@ -1,5 +1,6 @@
 # EventRouter
 
+[![Gem Version](https://badge.fury.io/rb/event_router.svg)](https://badge.fury.io/rb/event_router)
 ![Specs](https://github.com/ahmad-elassuty/event_router/workflows/Specs/badge.svg)
 
 EventRouter helps you organise your application domain events in a simple and intuitive way.
