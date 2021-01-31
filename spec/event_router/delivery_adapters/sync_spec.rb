@@ -1,10 +1,10 @@
 require 'event_router/delivery_adapters/sync'
 
 RSpec.describe EventRouter::DeliveryAdapters::Sync do
+  let(:event) { DummyEvent.new }
+
   describe '.deliver' do
     subject { described_class.deliver(event) }
-
-    let(:event) { DummyEvent.new }
 
     it 'fetches the extra payload once per destination' do
       event.destinations.each do |_name, destination|
@@ -21,6 +21,22 @@ RSpec.describe EventRouter::DeliveryAdapters::Sync do
       end
 
       subject
+    end
+  end
+
+  describe '.deliver_async' do
+    subject { described_class.deliver_async(event) }
+
+    before { allow(described_class).to receive(:deliver) { true } }
+
+    it 'schedules a thread' do
+      expect(subject).to be_instance_of(Thread)
+    end
+
+    it 'delegates to deliver method' do
+      subject.join
+
+      expect(described_class).to have_received(:deliver).once.with(event)
     end
   end
 end

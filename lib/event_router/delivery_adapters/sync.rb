@@ -3,11 +3,17 @@
 module EventRouter
   module DeliveryAdapters
     class Sync < Base
-      def self.deliver(event)
-        event.destinations.each do |_name, destination|
-          payload = destination.extra_payload(event)
+      class << self
+        def deliver(event)
+          event.destinations.each do |_name, destination|
+            payload = destination.extra_payload(event)
 
-          destination.process(event, payload)
+            destination.process(event, payload)
+          end
+        end
+
+        def deliver_async(event)
+          Thread.new { deliver(event) }
         end
       end
     end

@@ -15,6 +15,12 @@ module EventRouter
       Array(events).each { |event| adapter_class.deliver(event) }
     end
 
+    def publish_async(events, adapter:)
+      adapter_class = delivery_adapter(adapter)
+
+      Array(events).each { |event| adapter_class.deliver_async(event) }
+    end
+
     def delivery_adapter(adapter)
       EventRouter.configuration.delivery_adapter_class(adapter)
     end

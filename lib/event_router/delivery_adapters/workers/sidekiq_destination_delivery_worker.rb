@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../../serializer'
-require 'sidekiq'
-
 module EventRouter
   module DeliveryAdapters
-    module Jobs
-      class SidekiqEventDeliveryJob
+    module Workers
+      class SidekiqDestinationDeliveryWorker
         include ::Sidekiq::Worker
 
         def perform(destination_name, serialized_event, serialized_payload)

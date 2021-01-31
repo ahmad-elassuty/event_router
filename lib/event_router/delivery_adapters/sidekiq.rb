@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
-require_relative 'jobs/sidekiq_event_delivery_job'
+require 'sidekiq'
+
+require_relative '../serializer'
+
+require_relative 'helpers/deliver'
+require_relative 'helpers/sidekiq'
+
+require_relative 'workers/sidekiq_destination_delivery_worker'
+require_relative 'workers/sidekiq_event_delivery_worker'
 
 module EventRouter
   module DeliveryAdapters
@@ -17,18 +25,15 @@ module EventRouter
         end
 
         def deliver(event)
+          Helpers::Sidekiq.process_event(event)
+        end
+
+        def deliver_async(event)
           serialized_event = EventRouter.serialize(event)
 
-          event.destinations.each do |name, destination|
-            if destination.prefetch_payload?
-              payload             = destination.extra_payload(event)
-              serialized_payload  = EventRouter.serialize(payload)
-            end
-
-            Jobs::SidekiqEventDeliveryJob
-              .set(queue: options[:queue], retry: options[:retry])
-              .perform_async(name, serialized_event, serialized_payload)
-          end
+          Workers::SidekiqEventDeliveryWorker
+            .set(queue: options[:queue], retry: options[:retry])
+            .perform_async(serialized_event)
         end
       end
     end

@@ -52,6 +52,12 @@ It is very easy to create a new domain event and deliver it to multiple destinat
   OrderPlaced.publish(order_id: 1, time: Time.now)
   ```
 
+  Also you can publish the event async:
+
+  ```ruby
+  OrderPlaced.publish_async(order_id: 1, time: Time.now)
+  ```
+
 And your are done! 🎉
 
 An event can also define multiple destinations and each destination can have different set of options:
