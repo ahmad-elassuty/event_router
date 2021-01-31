@@ -14,6 +14,17 @@ RSpec.describe EventRouter do
     end
   end
 
+  describe '.publish_async' do
+    subject { EventRouter.publish_async(event) }
+
+    let(:event) { DummyEvent.new }
+
+    it 'delegates to publisher' do
+      expect(EventRouter::Publisher).to receive(:publish_async).once.with(event, adapter: :sync)
+      subject
+    end
+  end
+
   describe '.serialize' do
     subject { EventRouter.serialize(event) }
 

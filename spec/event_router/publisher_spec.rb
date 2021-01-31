@@ -33,4 +33,21 @@ RSpec.describe EventRouter::Publisher do
       subject
     end
   end
+
+  describe '.publish_async' do
+    subject { described_class.publish_async([event, event], adapter: :test_adapter) }
+
+    let(:event) { DummyEvent.new }
+
+    before do
+      allow(EventRouter.configuration).to receive(:delivery_adapter_class) { DummyDeliveryAdapter }
+    end
+
+    it 'delivers the event to the adapter' do
+      expect(EventRouter.configuration).to receive(:delivery_adapter_class).once.with(:test_adapter)
+      expect(DummyDeliveryAdapter).to receive(:deliver_async).twice.with(event)
+
+      subject
+    end
+  end
 end
