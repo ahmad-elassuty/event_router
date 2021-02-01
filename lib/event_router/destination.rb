@@ -4,7 +4,8 @@ module EventRouter
   class Destination
     # Attributes
     attr_reader :name, :handler, :handler_method,
-                :prefetch_payload, :payload_method
+                :prefetch_payload, :payload_method,
+                :options
 
     # Constants
     DEFAULT_ATTRIBUTES = {
@@ -22,9 +23,10 @@ module EventRouter
 
       @name             = name
       @handler          = handler
-      @handler_method   = opts[:handler_method]
-      @prefetch_payload = opts[:prefetch_payload]
-      @payload_method   = opts[:payload_method] || "#{name}_payload"
+      @handler_method   = opts.delete(:handler_method)
+      @prefetch_payload = opts.delete(:prefetch_payload)
+      @payload_method   = opts.delete(:payload_method) || "#{name}_payload"
+      @options          = opts
     end
 
     def process(event, payload)

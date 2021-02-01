@@ -2,11 +2,10 @@
 
 require 'sidekiq'
 
-require_relative '../serializer'
+require 'event_router/serializer'
+require 'event_router/helpers/event'
 
-require_relative 'helpers/deliver'
 require_relative 'helpers/sidekiq'
-
 require_relative 'workers/sidekiq_destination_delivery_worker'
 require_relative 'workers/sidekiq_event_delivery_worker'
 
@@ -29,7 +28,8 @@ module EventRouter
         end
 
         def deliver_async(event)
-          serialized_event = EventRouter.serialize(event)
+          serialized_event  = EventRouter.serialize(event)
+          options           = EventRouter::Helpers::Event.event_options(event, self)
 
           Workers::SidekiqEventDeliveryWorker
             .set(queue: options[:queue], retry: options[:retry])
