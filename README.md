@@ -1,6 +1,8 @@
 # EventRouter
 
 [![Gem Version](https://badge.fury.io/rb/event_router.svg)](https://badge.fury.io/rb/event_router)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9827b31ebf9a473013fb/maintainability)](https://codeclimate.com/github/ahmad-elassuty/event_router/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9827b31ebf9a473013fb/test_coverage)](https://codeclimate.com/github/ahmad-elassuty/event_router/test_coverage)
 ![Specs](https://github.com/ahmad-elassuty/event_router/workflows/Specs/badge.svg)
 
 EventRouter helps you organise your application domain events in a simple and intuitive way.
