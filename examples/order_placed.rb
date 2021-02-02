@@ -2,8 +2,11 @@
 
 module Examples
   class OrderPlaced < EventRouter::Event
+    event_options queue: :orders, retry: false
+
     deliver_to :notifications,
-               handler: Examples::Notifications
+               handler: Examples::Notifications,
+               queue: :notifications
 
     deliver_to :event_store,
                handler: Examples::EventStore::OrderPlaced,

@@ -12,6 +12,7 @@ module EventRouter
     attr_accessor :correlation_id
 
     class_attribute :destinations, default: {}, instance_writer: false
+    class_attribute :options, instance_writer: false
 
     def initialize(uid: SecureRandom.uuid, correlation_id: SecureRandom.uuid, created_at: Time.now, **payload)
       @uid            = uid
@@ -43,6 +44,10 @@ module EventRouter
 
       def deliver_to(name, opts = {})
         destinations[name] = EventRouter::Destination.new(name, **opts)
+      end
+
+      def event_options(opts)
+        self.options = opts
       end
 
       def publish(**attrs)

@@ -6,12 +6,14 @@ module EventRouter
       module Sidekiq
         module_function
 
+        extend EventRouter::Helpers::Event
+
         def process_event(event, serialized_event: nil)
           serialized_event ||= EventRouter.serialize(event)
 
-          options = EventRouter::DeliveryAdapters::Sidekiq.options
+          yield_destinations(event) do |destination, serialized_payload|
+            options = destination_options(destination, EventRouter::DeliveryAdapters::Sidekiq)
 
-          Helpers::Deliver.yield_destinations(event) do |destination, serialized_payload|
             Workers::SidekiqDestinationDeliveryWorker
               .set(queue: options[:queue], retry: options[:retry])
               .perform_async(destination.name, serialized_event, serialized_payload)
