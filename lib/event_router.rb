@@ -3,12 +3,14 @@
 require 'event_router/version'
 require 'event_router/error'
 
-require 'event_router/event'
-require 'event_router/delivery_adapters/base'
-require 'event_router/serializers/base'
-require 'event_router/publisher'
-require 'event_router/serializer'
 require 'event_router/configuration'
+require 'event_router/event'
+
+require 'event_router/serializers/base'
+require 'event_router/serializer'
+
+require 'event_router/delivery_adapters/base'
+require 'event_router/publisher'
 
 module EventRouter
   module_function
