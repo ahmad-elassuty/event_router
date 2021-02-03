@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'securerandom'
-require 'active_support/core_ext/class/attribute'
-require 'active_support/core_ext/string/inflections'
 
 require_relative 'destination'
 
@@ -10,9 +8,6 @@ module EventRouter
   class Event
     attr_reader :uid, :created_at, :payload
     attr_accessor :correlation_id
-
-    class_attribute :destinations, default: {}, instance_writer: false
-    class_attribute :options, instance_writer: false
 
     def initialize(uid: SecureRandom.uuid, correlation_id: SecureRandom.uuid, created_at: Time.now, **payload)
       @uid            = uid
@@ -33,12 +28,28 @@ module EventRouter
     alias to_h to_hash
 
     def name
-      self.class.name.demodulize.underscore
+      self.class.name.gsub(/([a-z])([A-Z])/, '\1_\2').gsub(/.*::/, '').downcase
+    end
+
+    def destinations
+      self.class.destinations
+    end
+
+    def options
+      self.class.options
+    end
+
+    def options?
+      !options.nil?
     end
 
     class << self
-      def inherited(base)
-        base.destinations = destinations.dup
+      attr_reader :options
+
+      def inherited(subclass)
+        subclass.instance_variable_set(:@options, @options.dup)
+        subclass.instance_variable_set(:@destinations, @destinations.dup)
+
         super
       end
 
@@ -46,8 +57,12 @@ module EventRouter
         destinations[name] = EventRouter::Destination.new(name, **opts)
       end
 
+      def destinations
+        @destinations ||= {}
+      end
+
       def event_options(opts)
-        self.options = opts
+        @options = opts
       end
 
       def publish(**attrs)

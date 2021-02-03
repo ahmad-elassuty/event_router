@@ -2,7 +2,6 @@
 
 require 'sidekiq'
 
-require 'event_router/serializer'
 require 'event_router/helpers/event'
 
 require_relative 'helpers/sidekiq'
