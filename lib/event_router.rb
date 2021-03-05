@@ -5,11 +5,14 @@ require 'event_router/error'
 
 require 'event_router/configuration'
 require 'event_router/event'
+require 'event_router/helpers/event'
 
 require 'event_router/serializers/base'
 require 'event_router/serializer'
 
 require 'event_router/delivery_adapters/base'
+require 'event_router/delivery_adapters/helpers/destination_delivery'
+
 require 'event_router/publisher'
 
 module EventRouter

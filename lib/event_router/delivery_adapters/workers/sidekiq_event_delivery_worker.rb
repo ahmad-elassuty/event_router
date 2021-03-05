@@ -9,7 +9,7 @@ module EventRouter
         def perform(serialized_event)
           event = EventRouter.deserialize(serialized_event)
 
-          Helpers::Sidekiq.process_event(event, serialized_event: serialized_event)
+          DeliveryAdapters::Sidekiq.deliver(event, serialized_event: serialized_event)
         end
       end
     end

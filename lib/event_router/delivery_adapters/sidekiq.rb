@@ -4,7 +4,6 @@ require 'sidekiq'
 
 require 'event_router/helpers/event'
 
-require_relative 'helpers/sidekiq'
 require_relative 'workers/sidekiq_destination_delivery_worker'
 require_relative 'workers/sidekiq_event_delivery_worker'
 
@@ -14,6 +13,8 @@ module EventRouter
       REQUIRED_OPTIONS = %i[queue retry].freeze
 
       class << self
+        include EventRouter::Helpers::Event
+
         def validate_options!(options)
           missing_options = REQUIRED_OPTIONS - options.compact.keys
 
@@ -22,8 +23,16 @@ module EventRouter
           raise Errors::RequiredOptionError.new(options: missing_options, adapter: self)
         end
 
-        def deliver(event)
-          Helpers::Sidekiq.process_event(event)
+        def deliver(event, serialized_event: nil)
+          serialized_event ||= EventRouter.serialize(event)
+
+          yield_destinations(event) do |destination, serialized_payload|
+            options = destination_options(destination, self)
+
+            Workers::SidekiqDestinationDeliveryWorker
+              .set(queue: options[:queue], retry: options[:retry])
+              .perform_async(destination.name, serialized_event, serialized_payload)
+          end
         end
 
         def deliver_async(event)
