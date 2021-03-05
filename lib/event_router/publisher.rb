@@ -6,7 +6,8 @@ module EventRouter
 
     ADAPTERS = {
       sync: { adapter_class: 'EventRouter::DeliveryAdapters::Sync', path: 'delivery_adapters/sync' },
-      sidekiq: { adapter_class: 'EventRouter::DeliveryAdapters::Sidekiq', path: 'delivery_adapters/sidekiq' }
+      sidekiq: { adapter_class: 'EventRouter::DeliveryAdapters::Sidekiq', path: 'delivery_adapters/sidekiq' },
+      sneakers: { adapter_class: 'EventRouter::DeliveryAdapters::Sneakers', path: 'delivery_adapters/sneakers' }
     }.freeze
 
     def publish(events, adapter:)
