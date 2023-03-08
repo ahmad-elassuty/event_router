@@ -22,7 +22,7 @@ GEM
     pry-byebug (3.9.0)
       byebug (~> 11.0)
       pry (~> 0.13.0)
-    rack (2.2.3)
+    rack (2.2.6.3)
     rainbow (3.0.0)
     redis (4.5.1)
     regexp_parser (1.7.1)
